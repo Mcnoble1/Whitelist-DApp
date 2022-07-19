@@ -2,20 +2,6 @@ import {loadStdlib} from '@reach-sh/stdlib';
 import { clear } from 'console';
 import * as backend from './build/index.main.mjs';
 
-const shouldFail = async (fp) => {
-  let worked = undefined;
-  try {
-    await fp();
-    worked = true;
-  } catch (e) {
-    worked = false;
-  }
-  console.log(`\tshouldFail = ${worked}`);
-  if (worked == false) {
-    throw Error(`shouldFail`);
-  }
-};
-
 const amt = 50;
 
 console.log('Deploying / attaching notifications');
@@ -53,7 +39,7 @@ if ( stdlib.connector === 'ETH' || stdlib.connector === 'CFX' ) {
   accBob.setGasLimit(myGasLimit);
 } else if ( stdlib.connector == 'ALGO' ) {
   console.log(`Demonstrating need to opt-in on ALGO`);
-  await shouldFail(async () => await token.mint(accAlice, startingBalance));
+  await token.mint(accAlice, startingBalance);
   console.log(`Opt-ing in on ALGO`);
   await accAlice.tokenAccept(token.id);
   await accBob.tokenAccept(token.id);
